@@ -3,19 +3,25 @@ package minsait.ttaa.datio.engine;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 
-import static minsait.ttaa.datio.common.Common.*;
-import static minsait.ttaa.datio.common.naming.PlayerInput.teamPosition;
+import minsait.ttaa.datio.common.ConfigParameters;
+import static minsait.ttaa.datio.common.naming.PlayerInput.nationality;
 import static org.apache.spark.sql.SaveMode.Overwrite;
 
-abstract class Writer {
+import java.io.IOException;
+import java.io.Serializable;
 
-    static void write(Dataset<Row> df) {
+abstract class Writer implements Serializable{
+
+    private static final long serialVersionUID = 1L;
+
+	static void write(Dataset<Row> df) throws IOException {
+    	ConfigParameters conf = new ConfigParameters();
         df
-                .coalesce(2)
+                .coalesce(1)
                 .write()
-                .partitionBy(teamPosition.getName())
+                .partitionBy(nationality.getName())
                 .mode(Overwrite)
-                .parquet(OUTPUT_PATH);
+                .parquet(conf.rutaOut);
     }
 
 }

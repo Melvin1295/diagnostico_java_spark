@@ -4,9 +4,13 @@ import org.apache.spark.sql.Column;
 
 import static org.apache.spark.sql.functions.col;
 
-public class Field {
+import java.io.Serializable;
 
-    Field(String name) {
+public class Field implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+	Field(String name) {
         this.name = name;
     }
 
